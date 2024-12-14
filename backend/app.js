@@ -3,19 +3,24 @@ const dotenv = require("dotenv");
 const sequelize = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const cors = require("cors");
+const medicineRoutes = require("./routes/medicineRoutes");
 
 dotenv.config();
 
 const app = express();
 
 // Enable CORS for Vite origin
-app.use(cors({
-  origin: "http://localhost:5173", // Adjust the origin to match your Vite app's URL
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Adjust the origin to match your Vite app's URL
+  })
+);
 
 app.use(express.json());
+// app.use(bodyParser.json());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/medicine", medicineRoutes);
 
 // Sync the database and start the server
 sequelize
