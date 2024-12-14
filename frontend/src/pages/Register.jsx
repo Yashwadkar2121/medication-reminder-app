@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const Register = () => {
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,6 +33,7 @@ const Register = () => {
         formData
       );
       setMessage(response.data.message);
+      navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "An error occurred");
     }

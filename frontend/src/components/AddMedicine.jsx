@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddMedicine = () => {
   const [name, setName] = useState("");
@@ -8,6 +9,7 @@ const AddMedicine = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +35,8 @@ const AddMedicine = () => {
       setName("");
       setDosage("");
       setScheduleTime("");
-      alert("Medicine added successfully!");
+      navigate("/");
+      // alert("Medicine added successfully!");
     } catch (err) {
       setError(err.response ? err.response.data.message : "Server error");
     } finally {
