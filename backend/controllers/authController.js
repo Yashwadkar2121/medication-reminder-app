@@ -9,13 +9,16 @@ const registerUser = async (req, res) => {
   const { Name, Email, Password, Role } = req.body;
 
   try {
+    // Check if the user already exists
     const existingUser = await User.findOne({ where: { Email } });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    // Hash the password
     const hashedPassword = await bcrypt.hash(Password, 10);
 
+    // Create a new user
     const newUser = await User.create({
       Name,
       Email,
@@ -25,7 +28,7 @@ const registerUser = async (req, res) => {
 
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    console.error(error);
+    console.error("Error during registration: ", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -35,16 +38,23 @@ const loginUser = async (req, res) => {
   const { Email, Password } = req.body;
 
   try {
+    console.log("Login attempt with email:", Email); // Debugging statement
+
+    // Find user by email
     const user = await User.findOne({ where: { Email } });
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Compare the entered password with the hashed password stored in the database
     const isMatch = await bcrypt.compare(Password, user.PasswordHash);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    console.log("User found and password matched."); // Debugging statement
+
+    // Generate JWT token
     const token = jwt.sign(
       { userId: user.ID, role: user.Role },
       process.env.JWT_SECRET,
@@ -53,7 +63,7 @@ const loginUser = async (req, res) => {
 
     res.status(200).json({ token });
   } catch (error) {
-    console.error(error);
+    console.error("Error during login: ", error); // Debugging statement
     res.status(500).json({ message: "Server error" });
   }
 };
