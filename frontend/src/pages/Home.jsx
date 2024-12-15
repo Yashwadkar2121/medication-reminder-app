@@ -45,7 +45,11 @@ const Home = () => {
         </thead>
         <tbody>
           {medicines.map((medicine) => (
-            <tr key={medicine.id} className="hover:bg-gray-100">
+            // Using medicine.id as the key, ensure it's unique in your data
+            <tr
+              key={medicine.id || `${medicine.Name}-${medicine.ScheduleTime}`}
+              className="hover:bg-gray-100"
+            >
               <td className="border border-gray-300 px-4 py-2">
                 {medicine.Name}
               </td>
