@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const User = require("../models/user");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -68,4 +68,24 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+const getAllUsers = async (req, res) => {
+  try {
+    // Check if the logged-in user has the "admin" role
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    // Fetch all users (excluding sensitive information like passwords)
+    const users = await User.findAll({
+      attributes: ["ID", "Name", "Email", "Role", "CreatedAt", "UpdatedAt"], // Exclude PasswordHash
+    });
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error fetching users: ", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
+module.exports = { registerUser, loginUser,getAllUsers };
