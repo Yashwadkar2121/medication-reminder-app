@@ -4,8 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import AddMedicine from "./components/AddMedicine";
-import AdminDashBoard from "./components/AdminDashBoard";
+import AddMedicine from "./pages/AddMedicine";
+import AdminDashBoard from "./pages/AdminDashBoard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
