@@ -120,6 +120,16 @@ const Home = () => {
     }
   };
 
+  const isSameDay = (timestamp) => {
+    const today = new Date();
+    const date = new Date(timestamp);
+    return (
+      today.getDate() === date.getDate() &&
+      today.getMonth() === date.getMonth() &&
+      today.getFullYear() === date.getFullYear()
+    );
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">Error: {error}</div>;
 
@@ -129,21 +139,25 @@ const Home = () => {
       <table className="min-w-full table-auto border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-200">
-            <th className="border border-gray-300 px-4 py-2 text-left">Name</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">Dose</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">
+            <th className="border border-gray-300 px-4 py-2 text-center">
+              Name
+            </th>
+            <th className="border border-gray-300 px-4 py-2 text-center">
+              Dose
+            </th>
+            <th className="border border-gray-300 px-4 py-2 text-center">
               ScheduleTime
             </th>
-            <th className="border border-gray-300 px-4 py-2 text-left">
+            <th className="border border-gray-300 px-4 py-2 text-center">
               Status
             </th>
-            <th className="border border-gray-300 px-4 py-2 text-left">
+            <th className="border border-gray-300 px-4 py-2 text-center">
               Timestamp
             </th>
-            <th className="border border-gray-300 px-4 py-2 text-left">
+            <th className="border border-gray-300 px-4 py-2 text-center">
               Actions
             </th>
-            <th className="border border-gray-300 px-4 py-2 text-left">
+            <th className="border border-gray-300 px-4 py-2 text-center">
               Manage
             </th>
           </tr>
@@ -151,40 +165,55 @@ const Home = () => {
         <tbody>
           {medicines.map((medicine) => {
             const acknowledgment = acknowledgmentLogs[medicine.ID] || {};
+            const canAcknowledge =
+              !acknowledgment.timestamp || !isSameDay(acknowledgment.timestamp);
+
             return (
               <tr key={medicine.ID} className="hover:bg-gray-100">
-                <td className="border border-gray-300 px-4 py-2">
+                <td className="border border-gray-300 px-4 py-2 text-center">
                   {medicine.Name}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                <td className="border border-gray-300 px-4 py-2 text-center">
                   {medicine.Dosage}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                <td className="border border-gray-300 px-4 py-2 text-center">
                   {medicine.ScheduleTime}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                <td className="border border-gray-300 px-4 py-2 text-center">
                   {acknowledgment.status || "Pending"}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                <td className="border border-gray-300 px-4 py-2 text-center">
                   {acknowledgment.timestamp
                     ? new Date(acknowledgment.timestamp).toLocaleString()
                     : "N/A"}
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                <td className="border border-gray-300 px-4 py-2 text-center">
                   <button
-                    onClick={() => handleAcknowledgment(medicine.ID, "taken")}
-                    className="bg-green-500 text-white px-4 py-2 rounded mr-2 hover:bg-green-600"
+                    onClick={() =>
+                      canAcknowledge &&
+                      handleAcknowledgment(medicine.ID, "Taken")
+                    }
+                    disabled={!canAcknowledge}
+                    className={`${
+                      !canAcknowledge ? "bg-gray-400" : "bg-green-500"
+                    } text-white px-4 py-2 rounded mr-2 hover:bg-green-600`}
                   >
                     Taken
                   </button>
                   <button
-                    onClick={() => handleAcknowledgment(medicine.ID, "missed")}
-                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                    onClick={() =>
+                      canAcknowledge &&
+                      handleAcknowledgment(medicine.ID, "Missed")
+                    }
+                    disabled={!canAcknowledge}
+                    className={`${
+                      !canAcknowledge ? "bg-gray-400" : "bg-red-500"
+                    } text-white px-4 py-2 rounded hover:bg-red-600`}
                   >
                     Missed
                   </button>
                 </td>
-                <td className="border border-gray-300 px-4 py-2">
+                <td className="border border-gray-300 px-4 py-2 text-center">
                   <button
                     onClick={() => handleUpdateMedicine(medicine)}
                     className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600"

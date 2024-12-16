@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const AdminDashBoard = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const navigate = useNavigate();
 
   // Fetch all users
   useEffect(() => {
@@ -33,12 +31,14 @@ const AdminDashBoard = () => {
   }, []);
 
   const handleViewDetails = (userId) => {
-    // navigate(`/view-user/${userId}`); // Redirect to the user details page
     console.log(userId);
   };
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div className="text-red-500">Error: {error}</div>;
+  if (error)
+    return (
+      <div className="text-red-500 text-center m-10 text-3xl">{error}</div>
+    );
 
   return (
     <div className="p-4">
@@ -46,16 +46,20 @@ const AdminDashBoard = () => {
       <table className="min-w-full table-auto border-collapse border border-gray-300">
         <thead>
           <tr className="bg-gray-200">
-            <th className="border border-gray-300 px-4 py-2 text-left">ID</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">Name</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">
+            <th className="border border-gray-300 px-4 py-2 text-center">ID</th>
+            <th className="border border-gray-300 px-4 py-2 text-center">
+              Name
+            </th>
+            <th className="border border-gray-300 px-4 py-2 text-center">
               Email
             </th>
-            <th className="border border-gray-300 px-4 py-2 text-left">Role</th>
-            <th className="border border-gray-300 px-4 py-2 text-left">
+            <th className="border border-gray-300 px-4 py-2 text-center">
+              Role
+            </th>
+            <th className="border border-gray-300 px-4 py-2 text-center">
               Created At
             </th>
-            <th className="border border-gray-300 px-4 py-2 text-left">
+            <th className="border border-gray-300 px-4 py-2 text-center">
               Actions
             </th>
           </tr>
@@ -63,14 +67,22 @@ const AdminDashBoard = () => {
         <tbody>
           {users.map((user) => (
             <tr key={user.ID} className="hover:bg-gray-100">
-              <td className="border border-gray-300 px-4 py-2">{user.ID}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.Name}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.Email}</td>
-              <td className="border border-gray-300 px-4 py-2">{user.Role}</td>
-              <td className="border border-gray-300 px-4 py-2">
+              <td className="border border-gray-300 px-4 py-2 text-center">
+                {user.ID}
+              </td>
+              <td className="border border-gray-300 px-4 py-2 text-center">
+                {user.Name}
+              </td>
+              <td className="border border-gray-300 px-4 py-2 text-center">
+                {user.Email}
+              </td>
+              <td className="border border-gray-300 px-4 py-2 text-center">
+                {user.Role}
+              </td>
+              <td className="border border-gray-300 px-4 py-2 text-center">
                 {new Date(user.CreatedAt).toLocaleString()}
               </td>
-              <td className="border border-gray-300 px-4 py-2">
+              <td className="border border-gray-300 px-4 py-2 text-center">
                 <button
                   className="bg-blue-500 text-white px-4 py-2 rounded"
                   onClick={() => handleViewDetails(user.ID)}

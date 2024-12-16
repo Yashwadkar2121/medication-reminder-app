@@ -30,7 +30,7 @@ const AcknowledgmentLogs = sequelize.define(
       onDelete: "CASCADE",
     },
     Status: {
-      type: DataTypes.ENUM("taken", "missed"),
+      type: DataTypes.ENUM("Taken", "Missed"),
       allowNull: false,
     },
     Timestamp: {

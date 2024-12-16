@@ -1,5 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 function Navbar() {
+  const navigate = useNavigate();
+
+  // Check if the user is logged in by checking for a token in localStorage
+  const token = localStorage.getItem("token");
+  const isLoggedIn = token !== null;
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Remove token from localStorage
+    navigate("/login"); // Redirect to login page after logout
+  };
+
   return (
     <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
       <div className="flex items-center flex-shrink-0 text-white mr-6">
@@ -32,32 +44,35 @@ function Navbar() {
         <div className="text-sm lg:flex-grow">
           <Link
             to="/add"
-            href="#responsive-header"
             className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
           >
             Add
           </Link>
           <Link
             to="/dash"
-            href="#responsive-header"
             className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
           >
             DashBoard
           </Link>
         </div>
         <div className="space-x-2">
-          <button
-            href="#"
-            className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-          >
-            <Link to="/signup">SignUp</Link>
-          </button>
-          <button
-            href="#"
-            className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-          >
-            <Link to="/login">Login</Link>
-          </button>
+          {!isLoggedIn ? (
+            <>
+              <button className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">
+                <Link to="/signup">SignUp</Link>
+              </button>
+              <button className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0">
+                <Link to="/login">Login</Link>
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </div>
     </nav>
