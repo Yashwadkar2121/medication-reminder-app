@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -10,6 +11,12 @@ function Navbar() {
   const handleLogout = () => {
     localStorage.removeItem("token"); // Remove token from localStorage
     navigate("/login"); // Redirect to login page after logout
+  };
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Manage mobile menu visibility
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
   return (
@@ -28,8 +35,13 @@ function Navbar() {
           <Link to="/">Medication</Link>
         </span>
       </div>
+
+      {/* Mobile menu button */}
       <div className="block lg:hidden">
-        <button className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white">
+        <button
+          className="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white"
+          onClick={toggleMenu} // Toggle menu visibility on click
+        >
           <svg
             className="fill-current h-3 w-3"
             viewBox="0 0 20 20"
@@ -40,6 +52,8 @@ function Navbar() {
           </svg>
         </button>
       </div>
+
+      {/* Desktop navigation */}
       <div className="w-full hidden md:block flex-grow lg:flex lg:items-center lg:w-auto">
         <div className="text-sm lg:flex-grow">
           <Link
@@ -74,6 +88,53 @@ function Navbar() {
             </button>
           )}
         </div>
+      </div>
+
+      {/* Mobile menu links (visible when the menu is open) */}
+      <div
+        className={`${
+          isMenuOpen ? "block" : "hidden"
+        } w-full lg:hidden bg-teal-500 mt-4 p-4 rounded-lg md:flex md:items-center md:w-auto`}
+      >
+        <Link
+          to="/add"
+          className="block py-2 text-teal-200 hover:text-white"
+          onClick={toggleMenu} // Close menu on item click
+        >
+          Add
+        </Link>
+        <Link
+          to="/dash"
+          className="block py-2 text-teal-200 hover:text-white"
+          onClick={toggleMenu} // Close menu on item click
+        >
+          DashBoard
+        </Link>
+        {!isLoggedIn ? (
+          <>
+            <Link
+              to="/signup"
+              className="block py-2 text-teal-200 hover:text-white"
+              onClick={toggleMenu} // Close menu on item click
+            >
+              SignUp
+            </Link>
+            <Link
+              to="/login"
+              className="block py-2 text-teal-200 hover:text-white"
+              onClick={toggleMenu} // Close menu on item click
+            >
+              Login
+            </Link>
+          </>
+        ) : (
+          <button
+            onClick={handleLogout}
+            className="block py-2 text-teal-200 hover:text-white"
+          >
+            Logout
+          </button>
+        )}
       </div>
     </nav>
   );
