@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 const Home = () => {
   const [medicines, setMedicines] = useState([]);
@@ -195,13 +196,7 @@ const Home = () => {
                     {medicine.Dosage}
                   </td>
                   <td className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
-                    {new Date(
-                      `1970-01-01T${medicine.ScheduleTime}Z`
-                    ).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: false,
-                    })}
+                    {medicine.ScheduleTime}
                   </td>
                   <td className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
                     {acknowledgment.status || "Pending"}
@@ -340,6 +335,18 @@ const UpdateModal = ({ medicine, onClose, onSave }) => {
       </div>
     </div>
   );
+};
+
+// Prop validation for UpdateModal component
+UpdateModal.propTypes = {
+  medicine: PropTypes.shape({
+    ID: PropTypes.number.isRequired,
+    Name: PropTypes.string.isRequired,
+    Dosage: PropTypes.string.isRequired,
+    ScheduleTime: PropTypes.string.isRequired,
+  }).isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
 
 export default Home;

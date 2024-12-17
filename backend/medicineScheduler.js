@@ -21,7 +21,7 @@ const checkMedicineSchedules = async () => {
       const userEmail = medicine.User.Email;
       const userName = medicine.User.Name;
 
-      const subject = "Medicine Reminder";
+      const subject = `Reminder: Time to Take Your Medicine - ${Name}`;
       const message = `Hi ${userName},\n\nThis is a reminder to take your medicine "${Name}" (Dosage: ${Dosage}).\n\nStay healthy!\nYour Medicine App`;
 
       await sendEmailNotification(userEmail, subject, message);
