@@ -6,7 +6,7 @@ const sendEmailNotification = require("./services/notificationsJob");
 // Function to check schedules and send notifications
 const checkMedicineSchedules = async () => {
   const currentTime = new Date().toTimeString().slice(0, 5); // Get current time in HH:MM format
-  console.log("Checking schedules for:", currentTime);
+  // console.log("Checking schedules for:", currentTime);
 
   try {
     // Find medicines scheduled for the current time
@@ -36,7 +36,7 @@ const startMedicineScheduler = () => {
   cron.schedule("* * * * *", () => {
     checkMedicineSchedules();
   });
-  console.log("Medicine scheduler started...");
+  // console.log("Medicine scheduler started...");
 };
 
 module.exports = startMedicineScheduler;

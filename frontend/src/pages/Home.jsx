@@ -77,21 +77,33 @@ const Home = () => {
   };
 
   const handleDeleteMedicine = async (medicineID) => {
+    // Show confirmation dialog
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this medicine?"
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`http://localhost:5000/api/medicine/${medicineID}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      // Remove the deleted medicine from the state
       setMedicines((prev) =>
         prev.filter((medicine) => medicine.ID !== medicineID)
       );
+
+      alert("Medicine deleted successfully!");
     } catch (err) {
       alert(
         err.response ? err.response.data.message : "Failed to delete medicine"
       );
     }
   };
-
   const handleUpdateMedicine = (medicine) => {
     setCurrentMedicine(medicine);
     setShowUpdateModal(true);
