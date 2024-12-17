@@ -45,4 +45,6 @@ const Medicine = sequelize.define(
   }
 );
 
+Medicine.belongsTo(User, { foreignKey: "UserID" });
+
 module.exports = Medicine;

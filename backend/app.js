@@ -5,7 +5,7 @@ const authRoutes = require("./routes/authRoutes");
 const cors = require("cors");
 const medicineRoutes = require("./routes/medicineRoutes");
 const addAcknowledgmentLogRoute = require("./routes/acknowledgmentLogsRoutes");
-
+const startMedicineScheduler = require("./medicineScheduler");
 dotenv.config();
 
 const app = express();
@@ -23,6 +23,9 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/medicine", medicineRoutes);
 app.use("/api/acknowledgment", addAcknowledgmentLogRoute);
+
+// Start the medicine scheduler
+startMedicineScheduler();
 
 // Sync the database and start the server
 sequelize
