@@ -40,7 +40,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center min-h-[70vh] lg:min-h-[90vh] bg-gray-100 p-5 md:p-0">
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
           Register User
