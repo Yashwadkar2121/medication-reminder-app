@@ -137,108 +137,133 @@ const Home = () => {
     );
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div className="text-red-500">Error: {error}</div>;
+  if (loading) return <div className="text-center">Loading...</div>;
+  if (error)
+    return (
+      <div className="text-red-500 text-center text-3xl mt-10"> {error}</div>
+    );
 
   return (
     <div className="p-4">
       <h2 className="text-2xl font-semibold mb-4">Your Medicines</h2>
-      <table className="min-w-full table-auto border-collapse border border-gray-300">
-        <thead>
-          <tr className="bg-gray-200">
-            <th className="border border-gray-300 px-4 py-2 text-center">
-              Name
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-center">
-              Dose
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-center">
-              ScheduleTime
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-center">
-              Status
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-center">
-              Timestamp
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-center">
-              Actions
-            </th>
-            <th className="border border-gray-300 px-4 py-2 text-center">
-              Manage
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {medicines.map((medicine) => {
-            const acknowledgment = acknowledgmentLogs[medicine.ID] || {};
-            const canAcknowledge =
-              !acknowledgment.timestamp || !isSameDay(acknowledgment.timestamp);
+      <div className="overflow-x-auto">
+        <table className="min-w-full table-auto border-collapse border border-gray-300">
+          <thead>
+            <tr className="bg-gray-200">
+              <th className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
+                No.
+              </th>
+              <th className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
+                Name
+              </th>
+              <th className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
+                Dose
+              </th>
+              <th className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
+                Time
+              </th>
+              <th className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
+                Status
+              </th>
+              <th className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
+                Timestamp
+              </th>
+              <th className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
+                Actions
+              </th>
+              <th className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
+                Manage
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {medicines.map((medicine, index) => {
+              const acknowledgment = acknowledgmentLogs[medicine.ID] || {};
+              const canAcknowledge =
+                !acknowledgment.timestamp ||
+                !isSameDay(acknowledgment.timestamp);
 
-            return (
-              <tr key={medicine.ID} className="hover:bg-gray-100">
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  {medicine.Name}
-                </td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  {medicine.Dosage}
-                </td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  {medicine.ScheduleTime}
-                </td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  {acknowledgment.status || "Pending"}
-                </td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  {acknowledgment.timestamp
-                    ? new Date(acknowledgment.timestamp).toLocaleString()
-                    : "N/A"}
-                </td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  <button
-                    onClick={() =>
-                      canAcknowledge &&
-                      handleAcknowledgment(medicine.ID, "Taken")
-                    }
-                    disabled={!canAcknowledge}
-                    className={`${
-                      !canAcknowledge ? "bg-gray-400" : "bg-green-500"
-                    } text-white px-4 py-2 rounded mr-2 hover:bg-green-600`}
-                  >
-                    Taken
-                  </button>
-                  <button
-                    onClick={() =>
-                      canAcknowledge &&
-                      handleAcknowledgment(medicine.ID, "Missed")
-                    }
-                    disabled={!canAcknowledge}
-                    className={`${
-                      !canAcknowledge ? "bg-gray-400" : "bg-red-500"
-                    } text-white px-4 py-2 rounded hover:bg-red-600`}
-                  >
-                    Missed
-                  </button>
-                </td>
-                <td className="border border-gray-300 px-4 py-2 text-center">
-                  <button
-                    onClick={() => handleUpdateMedicine(medicine)}
-                    className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600"
-                  >
-                    Update
-                  </button>
-                  <button
-                    onClick={() => handleDeleteMedicine(medicine.ID)}
-                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+              return (
+                <tr key={medicine.ID} className="hover:bg-gray-100">
+                  <td className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
+                    {index + 1}
+                  </td>
+                  <td className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
+                    {medicine.Name}
+                  </td>
+                  <td className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
+                    {medicine.Dosage}
+                  </td>
+                  <td className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
+                    {new Date(
+                      `1970-01-01T${medicine.ScheduleTime}Z`
+                    ).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false,
+                    })}
+                  </td>
+                  <td className="border border-gray-300 px-2 py-1 lg:px-2 lg:py-2 text-center text-xs md:text-sm lg:text-normal">
+                    {acknowledgment.status || "Pending"}
+                  </td>
+                  <td className="border border-gray-300 px-2 py-1 text-center text-xs md:text-sm lg:text-normal">
+                    {acknowledgment.timestamp
+                      ? new Date(acknowledgment.timestamp).toLocaleString([], {
+                          year: "numeric",
+                          month: "short",
+                          day: "2-digit",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: false,
+                        })
+                      : "N/A"}
+                  </td>
+                  <td className="border border-gray-300 px-2 py-1 text-center text-xs md:text-sm lg:text-normal whitespace-nowrap">
+                    <button
+                      onClick={() =>
+                        canAcknowledge &&
+                        handleAcknowledgment(medicine.ID, "Taken")
+                      }
+                      disabled={!canAcknowledge}
+                      className={`${
+                        !canAcknowledge ? "bg-gray-400" : "bg-green-500"
+                      } text-white px-2 py-1 md:px-2 md:py-2 lg:px-4 lg:py-1 rounded mr-2 hover:bg-green-600 text-xs md:text-sm lg:text-normal`}
+                    >
+                      Take
+                    </button>
+                    <button
+                      onClick={() =>
+                        canAcknowledge &&
+                        handleAcknowledgment(medicine.ID, "Missed")
+                      }
+                      disabled={!canAcknowledge}
+                      className={`${
+                        !canAcknowledge ? "bg-gray-400" : "bg-red-500"
+                      } text-white px-2 py-1  md:px-2 md:py-2 lg:px-4 lg:py-1 rounded hover:bg-red-600 text-xs md:text-sm lg:text-normal`}
+                    >
+                      Miss
+                    </button>
+                  </td>
+                  <td className="border border-gray-300  text-center text-xs md:text-sm lg:text-normal whitespace-nowrap">
+                    <button
+                      onClick={() => handleUpdateMedicine(medicine)}
+                      className="text-blue-500 py-1 lg:px-2 lg:py-2 rounded mr-2 hover:text-blue-600 text-sm md:text-lg lg:text-xl"
+                    >
+                      <i className="fa-regular fa-pen-to-square"></i>
+                    </button>
+                    <button
+                      onClick={() => handleDeleteMedicine(medicine.ID)}
+                      className="text-red-500 py-1 lg:px-2 lg:py-2 rounded hover:text-red-800 text-sm md:text-lg lg:text-xl"
+                    >
+                      <i className="fa-solid fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
 
       {/* Update Modal */}
       {showUpdateModal && (
@@ -265,8 +290,8 @@ const UpdateModal = ({ medicine, onClose, onSave }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-4 rounded shadow-lg">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 p-5 md:p-0">
+      <div className="bg-white p-4 rounded shadow-lg max-w-sm w-full">
         <h3 className="text-xl font-semibold mb-4">Update Medicine</h3>
         <div className="mb-4">
           <label className="block mb-2">Name</label>
@@ -301,13 +326,13 @@ const UpdateModal = ({ medicine, onClose, onSave }) => {
         <div className="flex justify-end">
           <button
             onClick={onClose}
-            className="bg-gray-500 text-white px-4 py-2 rounded mr-2 hover:bg-gray-600"
+            className="bg-gray-500 text-white px-2 py-1 lg:px-2 lg:py-2 rounded mr-2 hover:bg-gray-600"
           >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            className="bg-green-500 text-white px-2 py-1 lg:px-2 lg:py-2 rounded hover:bg-green-600"
           >
             Save
           </button>
