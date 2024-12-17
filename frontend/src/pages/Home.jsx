@@ -105,11 +105,18 @@ const Home = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
+      // Update the medicines list
       setMedicines((prev) =>
         prev.map((medicine) =>
           medicine.ID === updatedMedicine.ID ? response.data : medicine
         )
       );
+
+      // Reset acknowledgment log for the updated medicine
+      setAcknowledgmentLogs((prevLogs) => ({
+        ...prevLogs,
+        [updatedMedicine.ID]: null,
+      }));
 
       setShowUpdateModal(false);
       setCurrentMedicine(null);
